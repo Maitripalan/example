@@ -48,21 +48,21 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
       switch (_radioValue) {
         case 0:
-        setState(() {
-          _radioVal = "MSC(CA & IT)";
-        });
+          setState(() {
+            _radioVal = "MSC(CA & IT)";
+          });
           break;
 
         case 1:
           setState(() {
-          _radioVal = "MSC IT";
-        });
+            _radioVal = "MSC IT";
+          });
           break;
 
         case 2:
           setState(() {
-          _radioVal = "BE / BSC IT";
-        });
+            _radioVal = "BE / BSC IT";
+          });
           break;
       }
     });
@@ -309,7 +309,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                               SizedBox(height: 10),
                               Row(
                                 children: [
-                                  new Radio(
+                                  Radio(
+                                    activeColor: Colors.purple.shade800,
                                     value: 0,
                                     groupValue: _radioValue,
                                     onChanged: _handleRadioValueChange,
@@ -319,7 +320,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                               ),
                               Row(
                                 children: [
-                                  new Radio(
+                                  Radio(
+                                    activeColor: Colors.purple.shade800,
                                     value: 1,
                                     groupValue: _radioValue,
                                     onChanged: _handleRadioValueChange,
@@ -329,7 +331,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                               ),
                               Row(
                                 children: [
-                                   new Radio(
+                                  Radio(
+                                    activeColor: Colors.purple.shade800,
                                     value: 3,
                                     groupValue: _radioValue,
                                     onChanged: _handleRadioValueChange,
@@ -382,7 +385,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               duration: Duration(milliseconds: 5000),
-                              content: Text("Please Enter Valid Name.!"),
+                              content: Text("Please Enter Valid Name !"),
                             ),
                           );
                         } else if (_email.text.trim().length < 0 ||
@@ -400,7 +403,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                             SnackBar(
                               duration: Duration(milliseconds: 5000),
                               content:
-                                  Text("Please enter 10 digit mobile Number."),
+                                  Text("Please enter 10 digit mobile Number !"),
                             ),
                           );
                           ;
@@ -410,7 +413,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                             SnackBar(
                               duration: Duration(milliseconds: 5000),
                               content: Text(
-                                  "Please enter valid Company/Insitute Name."),
+                                  "Please enter valid Company/Insitute Name !"),
                             ),
                           );
                         } else if (_city.text.trim().length < 0 ||
