@@ -1,5 +1,6 @@
 import 'package:example/screens/response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationForm extends StatefulWidget {
@@ -14,7 +15,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
   TextEditingController _email = TextEditingController(text: '');
 
   TextEditingController _mobile = TextEditingController(text: '');
-  TextEditingController _course = TextEditingController(text: '');
   TextEditingController _company = TextEditingController(text: '');
   TextEditingController _city = TextEditingController(text: '');
 
@@ -29,6 +29,43 @@ class _RegistrationFormState extends State<RegistrationForm> {
     await prefs.setString("company", company);
     await prefs.setString("course", course);
     await prefs.setString("city", city);
+  }
+
+  String _radioVal = 'MSC(CA & IT)';
+
+  bool verifyEmail(String email) {
+    bool check = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    return check;
+  }
+
+  int? _radioValue = 0;
+
+  VoidCallback? _handleRadioValueChange(int? value) {
+    setState(() {
+      _radioValue = value;
+
+      switch (_radioValue) {
+        case 0:
+        setState(() {
+          _radioVal = "MSC(CA & IT)";
+        });
+          break;
+
+        case 1:
+          setState(() {
+          _radioVal = "MSC IT";
+        });
+          break;
+
+        case 2:
+          setState(() {
+          _radioVal = "BE / BSC IT";
+        });
+          break;
+      }
+    });
   }
 
   @override
@@ -131,7 +168,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              TextFormField()
+                              TextFormField(
+                                controller: _name,
+                                autofocus: false,
+                                maxLines: 1,
+                                keyboardType: TextInputType.text,
+                                decoration:
+                                    InputDecoration(hintText: "Your answer"),
+                              )
                             ]))),
                 SizedBox(height: 20),
                 Container(
@@ -158,7 +202,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              TextFormField()
+                              TextFormField(
+                                controller: _email,
+                                autofocus: false,
+                                maxLines: 1,
+                                keyboardType: TextInputType.text,
+                                decoration:
+                                    InputDecoration(hintText: "Your answer"),
+                              )
                             ]))),
                 SizedBox(height: 20),
                 Container(
@@ -185,7 +236,17 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              TextFormField()
+                              TextFormField(
+                                controller: _mobile,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(10)
+                                ],
+                                autofocus: false,
+                                maxLines: 1,
+                                keyboardType: TextInputType.number,
+                                decoration:
+                                    InputDecoration(hintText: "Your answer"),
+                              )
                             ]))),
                 SizedBox(height: 20),
                 Container(
@@ -212,7 +273,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              TextFormField()
+                              TextFormField(
+                                controller: _company,
+                                autofocus: false,
+                                maxLines: 1,
+                                keyboardType: TextInputType.text,
+                                decoration:
+                                    InputDecoration(hintText: "Your answer"),
+                              )
                             ]))),
                 SizedBox(height: 20),
                 Container(
@@ -239,7 +307,36 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              TextFormField()
+                              Row(
+                                children: [
+                                  new Radio(
+                                    value: 0,
+                                    groupValue: _radioValue,
+                                    onChanged: _handleRadioValueChange,
+                                  ),
+                                  Text('MSC(CA & IT)'),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  new Radio(
+                                    value: 1,
+                                    groupValue: _radioValue,
+                                    onChanged: _handleRadioValueChange,
+                                  ),
+                                  Text('MSC IT'),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                   new Radio(
+                                    value: 3,
+                                    groupValue: _radioValue,
+                                    onChanged: _handleRadioValueChange,
+                                  ),
+                                  Text('BE / BSC IT'),
+                                ],
+                              )
                             ]))),
                 SizedBox(height: 20),
                 Container(
@@ -266,45 +363,72 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              TextFormField()
+                              TextFormField(
+                                controller: _city,
+                                autofocus: false,
+                                maxLines: 1,
+                                keyboardType: TextInputType.text,
+                                decoration:
+                                    InputDecoration(hintText: "Your answer"),
+                              )
                             ]))),
                 SizedBox(height: 20),
                 ElevatedButton(
                     // style: ButtonStyle(backgroundColor: MaterialStateProperty(Colors.accents)),
                     onPressed: () async {
                       try {
-                        if(_name.text.trim().length < 0 || _name.text.isEmpty)
-                        {
-                          Scaffold.of(context).showSnackBar(snackbar);
-                        } else if(_email.text.trim().length < 0 || _email.text.isEmpty)
-                        {
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                         else if(_mobile.text.trim().length < 0 || _mobile.text.isEmpty)
-                        {
-                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-;
-                        } else if(_company.text.trim().length < 0 || _company.text.isEmpty)
-                        {
-                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-;
-                        }else if(_course.text.trim().length < 0 || _course.text.isEmpty)
-                        {
-                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-;
-                        }
-                        else if(_city.text.trim().length < 0 || _city.text.isEmpty)
-                        {
-                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-;
-                        }
-                        else{
-                        await _setData(_name.text, _email.text, _mobile.text,
-                            _company.text, _course.text, _city.text);
+                        if (_name.text.trim().length < 0 ||
+                            _name.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(milliseconds: 5000),
+                              content: Text("Please Enter Valid Name.!"),
+                            ),
+                          );
+                        } else if (_email.text.trim().length < 0 ||
+                            _email.text.isEmpty ||
+                            (!verifyEmail(_email.text))) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(milliseconds: 5000),
+                              content: Text("Please Enter valid Email !"),
+                            ),
+                          );
+                        } else if (_mobile.text.trim().length < 0 ||
+                            _mobile.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(milliseconds: 5000),
+                              content:
+                                  Text("Please enter 10 digit mobile Number."),
+                            ),
+                          );
+                          ;
+                        } else if (_company.text.trim().length < 0 ||
+                            _company.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(milliseconds: 5000),
+                              content: Text(
+                                  "Please enter valid Company/Insitute Name."),
+                            ),
+                          );
+                        } else if (_city.text.trim().length < 0 ||
+                            _city.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(milliseconds: 5000),
+                              content: Text("Please enter valid city !"),
+                            ),
+                          );
+                          ;
+                        } else {
+                          await _setData(_name.text, _email.text, _mobile.text,
+                              _company.text, _radioVal, _city.text);
 
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResponsePage()));
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ResponsePage()));
                         }
                       } catch (err) {
                         print("Error Rgistration Form - ");
